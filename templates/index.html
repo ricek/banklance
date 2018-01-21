@@ -4,15 +4,16 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">{{ title }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
+        <button class="btn btn-sm btn-outline-danger" id="clear-btn">Clear</button>
         <button class="btn btn-sm btn-outline-secondary" id="link-btn">Add Account</button>
     </div>
 </div>
 {% for account in accounts %}
-<div class="card mt-4">
-    <h5 class="card-header">{{account['name']}}</h5>
+<div class="card mt-3 mb-3">
+    <h5 class="card-header">{{ account['name'] }}</h5>
     <div class="card-body">
-        <h5 class="card-title">{{account['balances']['current']}}</h5>
-        <p class="card-text">{{account['subtype']}}</p>
+        <h5 class="card-title">&dollar;{{ account['balances']['current'] }}</h5>
+        <p class="card-text">Type: {{ account['subtype'] }}</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
 </div>
@@ -35,6 +36,11 @@
 
         $('#link-btn').on('click', function (e) {
             handler.open();
+        });
+
+        $('#clear-btn').on('click', function(e) {
+            $.get('/clear_token'),
+            location.reload();
         });
     })(jQuery);
 </script>

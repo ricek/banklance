@@ -19,9 +19,14 @@
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Banklance</a>
+        <p class="align-middle h5 pl-4 text-white">Welcome, {{ current_user.username }}!</p>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
+                {% if current_user.is_anonymous %}
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
             </li>
         </ul>
     </nav>
@@ -31,13 +36,13 @@
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link {% if title=='Home' %}active{% endif %}" href="{{ url_for('index') }}">
                                 Home
-                                <span class="sr-only">(current)</span>
+                                <!--<span class="sr-only">(current)</span>-->
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {% if title=='Notifications' %}active{% endif %}" href="{{ url_for('notifications') }}">
                                 Notifications
                             </a>
                         </li>
