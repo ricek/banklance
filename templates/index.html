@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button class="btn btn-sm btn-outline-secondary" id="link-btn">Add Account</button>
+    </div>
+</div>
+{% for account in accounts %}
+<div class="card mt-4">
+    <h5 class="card-header">{{account['name']}}</h5>
+    <div class="card-body">
+        <h5 class="card-title">{{account['balances']['current']}}</h5>
+        <p class="card-text">{{account['subtype']}}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
+{% endfor %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script type="text/javascript">
+    (function ($) {
+        var handler = Plaid.create({
+            apiVersion: 'v2',
+            clientName: 'Banklance',
+            env: '{{ plaid_environment }}',
+            product: ['auth'],
+            key: '{{ plaid_public_key }}',
+            onSuccess: function(public_token) {
+                $.post('/get_access_token', {public_token: public_token}),
+                location.reload();
+            },
+        });
+
+        $('#link-btn').on('click', function (e) {
+            handler.open();
+        });
+    })(jQuery);
+</script>
+{% endblock %}
